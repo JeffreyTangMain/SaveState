@@ -1,8 +1,8 @@
 {
-  "name": "Brainstorm",
-  "version_number": "1.1.0-alpha",
-  "website_url": "https://github.com/OceanRamen/Brainstorm",
-  "description": "A Quality-of-Life Mod for Balatro",
+  "name": "Save State",
+  "version_number": "1.0.0",
+  "website_url": "https://github.com/",
+  "description": "A Save State Mod for Balatro",
   "dependencies": [
     "Thunderstore-lovely-0.5.0",
     "metherul-nativefs-1.0.0"

@@ -9,18 +9,18 @@ source = 'nativefs.lua'
 before = 'main.lua'
 name = 'nativefs'
 
-[[patches]] #   Patch Brainstorm to main
+[[patches]] #   Patch SaveState to main
 [patches.copy]
 target = "main.lua"
 position = "append"
-sources = ["Brainstorm.lua"]
+sources = ["SaveState.lua"]
 
-[[patches]] #   Initialize Brainstorm
+[[patches]] #   Initialize SaveState
 [patches.pattern]
 target = "game.lua"
 pattern = "self:load_profile(G.SETTINGS.profile or 1)"
 position = "after"
-payload = "initBrainstorm()"
+payload = "initSaveState()"
 match_indent = true
 overwrite = false
 
@@ -29,43 +29,6 @@ overwrite = false
 target = "engine/controller.lua"
 pattern = "if self.text_input_hook then"
 position = "before"
-payload = "Brainstorm.key_press_update(key)"
-match_indent = true
-overwrite = false
-
-#   Add aditional gamespeeds to settings
-[[patches]] #   Additional GameSpeed Options
-[patches.pattern]
-target = "functions/UI_definitions.lua"
-pattern = "create_option_cycle({label = localize('b_set_gamespeed'),scale = 0.8, options = {0.5, 1, 2, 4}, opt_callback = 'change_gamespeed', current_option = (G.SETTINGS.GAMESPEED == 0.5 and 1 or G.SETTINGS.GAMESPEED == 4 and 4 or G.SETTINGS.GAMESPEED + 1)}),"
-position = "at"
-payload = '''
-create_option_cycle({label = localize('b_set_gamespeed'),scale = 0.8, options = {0.5, 1, 2, 4, 8, 16, 32}, opt_callback = 'change_gamespeed', current_option = (G.SETTINGS.GAMESPEED == 0.5 and 1 or G.SETTINGS.GAMESPEED == 4 and 4 or G.SETTINGS.GAMESPEED == 8 and 5 or G.SETTINGS.GAMESPEED == 16 and 6 or G.SETTINGS.GAMESPEED == 32 and 7 or G.SETTINGS.GAMESPEED + 1)}),
-'''
-match_indent = true
-overwrite = true
-[[patches]] #   DebugMode Watermark
-[patches.pattern]
-target = "game.lua"
-pattern = "love.graphics.setCanvas(G.AA_CANVAS)"
-position = "before"
-payload = '''
-if Brainstorm.SETTINGS.debug_mode == true then 
-  love.graphics.push()
-  love.graphics.setColor(G.C.DARK_EDITION[1],G.C.DARK_EDITION[2],G.C.DARK_EDITION[3],1)
-  love.graphics.print("BRAINSTORM DEBUG_MODE", 10, -40)
-  love.graphics.pop()
-end
-'''
-match_indent = true
-overwrite = false
-[[patches]] #   Brainstorm Update Loop
-[patches.pattern]
-target = "game.lua"
-pattern = "G.FRAMES.MOVE = G.FRAMES.MOVE + 1"
-position = "before"
-payload = '''
-Brainstorm.update(dt)
-'''
+payload = "SaveState.key_press_update(key)"
 match_indent = true
 overwrite = false
